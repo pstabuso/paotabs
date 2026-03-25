@@ -10,18 +10,14 @@ export default function Login() {
   const [fullName, setFullName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState('')
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    setSuccess('')
     setLoading(true)
 
     if (isSignUp) {
       const { error } = await signUp(email, password, fullName)
       if (error) setError(error.message)
-      else setSuccess('Check your email for a confirmation link!')
     } else {
       const { error } = await signIn(email, password)
       if (error) setError(error.message)
@@ -48,7 +44,7 @@ export default function Login() {
           <div className="space-y-2.5 stagger">
             <FeatureRow icon={BarChart3} title="Task Management" desc="Kanban boards, priorities, deadlines" />
             <FeatureRow icon={Brain} title="Stress Assessment" desc="Track wellness with smart check-ins" />
-            <FeatureRow icon={Shield} title="Secure & Private" desc="Your data stays yours with Supabase RLS" />
+            <FeatureRow icon={Shield} title="Secure & Private" desc="Encrypted auth with JWT protection" />
           </div>
         </div>
 
@@ -110,12 +106,6 @@ export default function Login() {
                 </div>
               )}
 
-              {success && (
-                <div className="text-emerald-300 text-xs bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2.5 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
-                  {success}
-                </div>
-              )}
 
               <button
                 type="submit" disabled={loading}
@@ -134,7 +124,7 @@ export default function Login() {
 
             <div className="mt-4 pt-4 border-t border-slate-800/50 text-center">
               <button
-                onClick={() => { setIsSignUp(!isSignUp); setError(''); setSuccess('') }}
+                onClick={() => { setIsSignUp(!isSignUp); setError('') }}
                 className="text-xs text-slate-400 hover:text-blue-400 transition-colors"
               >
                 {isSignUp ? 'Already have an account? ' : "Don't have an account? "}

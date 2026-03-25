@@ -16,28 +16,42 @@ export function AuthProvider({ children }) {
       return
     }
     api.get('/auth/me').then(({ data, error }) => {
-      if (data?.user) setUser(data.user)
-      else setToken(null)
+      if (data?.user) {
+        setUser(data.user)
+      } else {
+        setToken(null)
+      }
+      setLoading(false)
+    }).catch(() => {
+      setToken(null)
       setLoading(false)
     })
   }, [])
 
   const signUp = async (email, password, fullName) => {
-    const { data, error } = await api.post('/auth/signup', { email, password, fullName })
-    if (data?.token) {
-      setToken(data.token)
-      setUser(data.user)
+    try {
+      const { data, error } = await api.post('/auth/signup', { email, password, fullName })
+      if (data?.token) {
+        setToken(data.token)
+        setUser(data.user)
+      }
+      return { data, error }
+    } catch {
+      return { data: null, error: { message: 'Unable to create account. Please try again.' } }
     }
-    return { data, error }
   }
 
   const signIn = async (email, password) => {
-    const { data, error } = await api.post('/auth/signin', { email, password })
-    if (data?.token) {
-      setToken(data.token)
-      setUser(data.user)
+    try {
+      const { data, error } = await api.post('/auth/signin', { email, password })
+      if (data?.token) {
+        setToken(data.token)
+        setUser(data.user)
+      }
+      return { data, error }
+    } catch {
+      return { data: null, error: { message: 'Unable to sign in. Please try again.' } }
     }
-    return { data, error }
   }
 
   const signOut = async () => {

@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import TaskTracker from './pages/TaskTracker'
 import StressAssessment from './pages/StressAssessment'
+import StressChatbot from './pages/StressChatbot'
 import Progress from './pages/Progress'
 import Schedule from './pages/Schedule'
 import { Menu, Zap } from 'lucide-react'
@@ -38,6 +39,7 @@ function AppLayout() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/tasks" element={<TaskTracker />} />
               <Route path="/stress" element={<StressAssessment />} />
+              <Route path="/chatbot" element={<StressChatbot />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="*" element={<Navigate to="/" replace />} />

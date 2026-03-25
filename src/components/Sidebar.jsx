@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, CheckSquare, Brain, TrendingUp, Calendar, LogOut, Zap } from 'lucide-react'
+import { LayoutDashboard, CheckSquare, Brain, MessageCircle, TrendingUp, Calendar, LogOut, Zap } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/tasks', icon: CheckSquare, label: 'Task Tracker' },
   { to: '/stress', icon: Brain, label: 'Stress Check' },
+  { to: '/chatbot', icon: MessageCircle, label: 'AI Counselor' },
   { to: '/progress', icon: TrendingUp, label: 'Progress' },
   { to: '/schedule', icon: Calendar, label: 'Schedule' },
 ]

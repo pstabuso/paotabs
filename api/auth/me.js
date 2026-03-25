@@ -11,14 +11,26 @@ export default async function handler(req, res) {
   if (!payload) return res.status(401).json({ error: 'Unauthorized' })
 
   try {
+    if (!payload.id || !ObjectId.isValid(payload.id)) {
+      return res.status(401).json({ error: 'Invalid session. Please sign in again.' })
+    }
+
     const db = await getDb()
     const user = await db.collection('users').findOne({ _id: new ObjectId(payload.id) })
-    if (!user) return res.status(404).json({ error: 'User not found' })
 
-    res.status(200).json({
-      user: { id: user._id.toString(), email: user.email, user_metadata: { full_name: user.full_name } }
+    if (!user) {
+      return res.status(404).json({ error: 'User not found. Please sign in again.' })
+    }
+
+    return res.status(200).json({
+      user: {
+        id: user._id.toString(),
+        email: user.email,
+        user_metadata: { full_name: user.full_name || '' }
+      }
     })
   } catch (err) {
-    res.status(500).json({ error: 'Server error' })
+    console.error('me error:', err.message)
+    return res.status(500).json({ error: 'Unable to verify session. Please try again.' })
   }
 }
