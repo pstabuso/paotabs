@@ -16,7 +16,7 @@ export function AppProvider({ children }) {
   const fetchTasks = useCallback(async () => {
     if (!user) return
     const { data } = await supabase
-      .from('tasks')
+      .from('pt_tasks')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
@@ -26,7 +26,7 @@ export function AppProvider({ children }) {
   const fetchAssessments = useCallback(async () => {
     if (!user) return
     const { data } = await supabase
-      .from('stress_assessments')
+      .from('pt_assessments')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
@@ -36,7 +36,7 @@ export function AppProvider({ children }) {
   const fetchEvents = useCallback(async () => {
     if (!user) return
     const { data } = await supabase
-      .from('events')
+      .from('pt_events')
       .select('*')
       .eq('user_id', user.id)
       .order('event_date', { ascending: true })
@@ -57,7 +57,7 @@ export function AppProvider({ children }) {
 
   const addTask = async (task) => {
     const { data, error } = await supabase
-      .from('tasks')
+      .from('pt_tasks')
       .insert([{ ...task, user_id: user.id }])
       .select()
     if (data) setTasks(prev => [data[0], ...prev])
@@ -66,7 +66,7 @@ export function AppProvider({ children }) {
 
   const updateTask = async (id, updates) => {
     const { data, error } = await supabase
-      .from('tasks')
+      .from('pt_tasks')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', id)
       .select()
@@ -75,14 +75,14 @@ export function AppProvider({ children }) {
   }
 
   const deleteTask = async (id) => {
-    const { error } = await supabase.from('tasks').delete().eq('id', id)
+    const { error } = await supabase.from('pt_tasks').delete().eq('id', id)
     if (!error) setTasks(prev => prev.filter(t => t.id !== id))
     return { error }
   }
 
   const addAssessment = async (assessment) => {
     const { data, error } = await supabase
-      .from('stress_assessments')
+      .from('pt_assessments')
       .insert([{ ...assessment, user_id: user.id }])
       .select()
     if (data) setAssessments(prev => [data[0], ...prev])
@@ -91,7 +91,7 @@ export function AppProvider({ children }) {
 
   const addEvent = async (event) => {
     const { data, error } = await supabase
-      .from('events')
+      .from('pt_events')
       .insert([{ ...event, user_id: user.id }])
       .select()
     if (data) setEvents(prev => [...prev, data[0]].sort((a, b) => new Date(a.event_date) - new Date(b.event_date)))
@@ -99,7 +99,7 @@ export function AppProvider({ children }) {
   }
 
   const deleteEvent = async (id) => {
-    const { error } = await supabase.from('events').delete().eq('id', id)
+    const { error } = await supabase.from('pt_events').delete().eq('id', id)
     if (!error) setEvents(prev => prev.filter(e => e.id !== id))
     return { error }
   }
