@@ -2,14 +2,14 @@ import { useState, useMemo } from 'react'
 import { useApp } from '../context/AppContext'
 import { ChevronLeft, ChevronRight, Plus, X, Trash2, Calendar as CalIcon } from 'lucide-react'
 
-const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#06b6d4']
+const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#06b6d4']
 
 export default function Schedule() {
   const { events, tasks, addEvent, deleteEvent } = useApp()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [showModal, setShowModal] = useState(false)
   const [selectedDate, setSelectedDate] = useState(null)
-  const [form, setForm] = useState({ title: '', description: '', event_time: '', color: '#6366f1' })
+  const [form, setForm] = useState({ title: '', description: '', event_time: '', color: '#3b82f6' })
   const [saving, setSaving] = useState(false)
 
   const year = currentDate.getFullYear()
@@ -29,7 +29,7 @@ export default function Schedule() {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     const dayEvents = events.filter(e => e.event_date === dateStr)
     const dayTasks = tasks.filter(t => t.due_date === dateStr).map(t => ({
-      id: `task-${t.id}`, title: t.title, color: t.priority === 'critical' ? '#ef4444' : t.priority === 'high' ? '#f59e0b' : '#6366f1',
+      id: `task-${t.id}`, title: t.title, color: t.priority === 'critical' ? '#ef4444' : t.priority === 'high' ? '#f59e0b' : '#3b82f6',
       isTask: true
     }))
     return [...dayEvents, ...dayTasks]
@@ -42,7 +42,7 @@ export default function Schedule() {
   const openAddEvent = (day) => {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     setSelectedDate(dateStr)
-    setForm({ title: '', description: '', event_time: '', color: '#6366f1' })
+    setForm({ title: '', description: '', event_time: '', color: '#3b82f6' })
     setShowModal(true)
   }
 
@@ -62,38 +62,38 @@ export default function Schedule() {
   return (
     <div className="space-y-6 animate-enter">
       <div className="flex items-center gap-4">
-        <div className="p-3 rounded-2xl bg-amber-500/10 ring-1 ring-amber-500/20">
+        <div className="p-3 rounded-2xl bg-amber-600/10">
           <CalIcon size={22} className="text-amber-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-50">Schedule</h1>
+          <h1 className="text-2xl font-bold text-white">Schedule</h1>
           <p className="text-slate-500 text-sm mt-0.5">Events and task deadlines</p>
         </div>
       </div>
 
-      <div className="glass rounded-3xl p-6 glow-border">
+      <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
         {/* Calendar header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <button onClick={prevMonth} className="p-2 rounded-xl hover:bg-white/[0.05] text-slate-500 hover:text-slate-200 transition-all">
+            <button onClick={prevMonth} className="p-2 rounded-xl hover:bg-slate-800/50 text-slate-500 hover:text-slate-200 transition-all">
               <ChevronLeft size={18} />
             </button>
-            <button onClick={nextMonth} className="p-2 rounded-xl hover:bg-white/[0.05] text-slate-500 hover:text-slate-200 transition-all">
+            <button onClick={nextMonth} className="p-2 rounded-xl hover:bg-slate-800/50 text-slate-500 hover:text-slate-200 transition-all">
               <ChevronRight size={18} />
             </button>
           </div>
-          <h2 className="text-lg font-bold text-slate-100">
+          <h2 className="text-lg font-bold text-white">
             {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </h2>
-          <button onClick={goToday} className={`text-xs px-3 py-1.5 rounded-lg transition-all font-medium ${isCurrentMonth ? 'text-slate-600' : 'text-indigo-400 hover:bg-indigo-500/10'}`}>
+          <button onClick={goToday} className={`text-xs px-3 py-1.5 rounded-lg transition-all font-bold ${isCurrentMonth ? 'text-slate-600' : 'text-blue-400 hover:bg-blue-600/10'}`}>
             Today
           </button>
         </div>
 
         {/* Weekday headers */}
-        <div className="grid grid-cols-7 mb-2">
+        <div className="grid grid-cols-7 mb-2 bg-[#0f1524] rounded-xl">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-            <div key={d} className="text-center text-[11px] font-semibold text-slate-600 uppercase tracking-wider py-2">{d}</div>
+            <div key={d} className="text-center text-[10px] font-bold text-slate-600 uppercase tracking-wider py-2.5">{d}</div>
           ))}
         </div>
 
@@ -106,19 +106,19 @@ export default function Schedule() {
               <div
                 key={i}
                 onClick={() => day && openAddEvent(day)}
-                className={`min-h-[85px] sm:min-h-[100px] rounded-xl p-2 transition-all cursor-pointer group ${
-                  !day ? '' :
-                  isToday(day) ? 'bg-indigo-500/8 ring-1 ring-indigo-500/20 hover:ring-indigo-500/40' :
-                  hasEvents ? 'bg-white/[0.015] hover:bg-white/[0.04]' :
-                  'hover:bg-white/[0.02]'
+                className={`min-h-[85px] sm:min-h-[100px] rounded-xl p-2 transition-all cursor-pointer group border ${
+                  !day ? 'border-transparent' :
+                  isToday(day) ? 'bg-blue-600/8 border-blue-500/20 hover:border-blue-500/40' :
+                  hasEvents ? 'bg-slate-800/20 border-slate-800/50 hover:border-slate-700' :
+                  'border-transparent hover:bg-slate-800/20 hover:border-slate-800/50'
                 }`}
               >
                 {day && (
                   <>
                     <div className="flex items-center justify-between mb-1">
-                      <span className={`text-xs font-semibold w-6 h-6 flex items-center justify-center rounded-lg ${
+                      <span className={`text-xs font-bold w-6 h-6 flex items-center justify-center rounded-lg ${
                         isToday(day)
-                          ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30'
+                          ? 'bg-blue-600 text-white shadow-md shadow-blue-900/30'
                           : 'text-slate-400 group-hover:text-slate-200'
                       }`}>
                         {day}
@@ -126,7 +126,7 @@ export default function Schedule() {
                       {hasEvents && !isToday(day) && (
                         <div className="flex gap-0.5">
                           {dayEvents.slice(0, 3).map((ev, j) => (
-                            <div key={j} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ev.color || '#6366f1' }} />
+                            <div key={j} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ev.color || '#3b82f6' }} />
                           ))}
                         </div>
                       )}
@@ -134,7 +134,7 @@ export default function Schedule() {
                     <div className="space-y-0.5">
                       {dayEvents.slice(0, 2).map(ev => (
                         <div key={ev.id} className="flex items-center gap-1 group/item">
-                          <div className="w-1 h-3.5 rounded-full flex-shrink-0" style={{ backgroundColor: ev.color || '#6366f1' }} />
+                          <div className="w-1 h-3.5 rounded-full flex-shrink-0" style={{ backgroundColor: ev.color || '#3b82f6' }} />
                           <span className="text-[10px] text-slate-400 truncate flex-1 group-hover/item:text-slate-300">{ev.title}</span>
                           {!ev.isTask && (
                             <button
@@ -147,7 +147,7 @@ export default function Schedule() {
                         </div>
                       ))}
                       {dayEvents.length > 2 && (
-                        <span className="text-[10px] text-slate-600 font-medium">+{dayEvents.length - 2} more</span>
+                        <span className="text-[10px] text-slate-600 font-bold">+{dayEvents.length - 2} more</span>
                       )}
                     </div>
                   </>
@@ -160,16 +160,16 @@ export default function Schedule() {
 
       {/* Add Event Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade" onClick={() => setShowModal(false)}>
-          <div className="glass-strong rounded-3xl p-7 w-full max-w-md shadow-2xl shadow-black/40 animate-scale" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade" onClick={() => setShowModal(false)}>
+          <div className="bg-[#131b2e] border border-slate-700 rounded-2xl shadow-2xl p-7 w-full max-w-md animate-scale" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h3 className="text-lg font-bold text-slate-100">New Event</h3>
+                <h3 className="text-lg font-bold text-white">New Event</h3>
                 <p className="text-xs text-slate-500 mt-0.5">
                   {new Date(selectedDate + 'T00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </p>
               </div>
-              <button onClick={() => setShowModal(false)} className="text-slate-500 hover:text-slate-300 p-1 rounded-lg hover:bg-white/[0.05] transition-colors">
+              <button onClick={() => setShowModal(false)} className="text-slate-500 hover:text-slate-300 p-1 rounded-lg hover:bg-slate-800/50 transition-colors">
                 <X size={18} />
               </button>
             </div>
@@ -177,36 +177,36 @@ export default function Schedule() {
               <input
                 type="text" placeholder="Event title" value={form.title}
                 onChange={e => setForm({ ...form, title: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-[#0B0F19]/80 border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-600"
+                className="w-full px-4 py-3 rounded-xl bg-[#0B0F19] border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-600"
                 required autoFocus
               />
               <input
                 type="text" placeholder="Description (optional)" value={form.description}
                 onChange={e => setForm({ ...form, description: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-[#0B0F19]/80 border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-600"
+                className="w-full px-4 py-3 rounded-xl bg-[#0B0F19] border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-600"
               />
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] text-slate-500 mb-1.5 block uppercase tracking-wider font-medium">Time</label>
+                  <label className="text-[10px] text-slate-500 mb-1.5 block uppercase tracking-wider font-bold">Time</label>
                   <input
                     type="time" value={form.event_time} onChange={e => setForm({ ...form, event_time: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#0B0F19]/80 border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] text-slate-500 mb-1.5 block uppercase tracking-wider font-medium">Color</label>
+                  <label className="text-[10px] text-slate-500 mb-1.5 block uppercase tracking-wider font-bold">Color</label>
                   <div className="flex gap-2 mt-1.5">
                     {COLORS.map(c => (
                       <button key={c} type="button" onClick={() => setForm({ ...form, color: c })}
                         className={`w-7 h-7 rounded-lg border-2 transition-all hover:scale-110 ${form.color === c ? 'border-white shadow-lg scale-110' : 'border-transparent'}`}
-                        style={{ backgroundColor: c, boxShadow: form.color === c ? `0 0 12px ${c}40` : 'none' }}
+                        style={{ backgroundColor: c }}
                       />
                     ))}
                   </div>
                 </div>
               </div>
               <button type="submit" disabled={saving}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-sm hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 active:scale-[0.98] transition-all">
+                className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-900/20 disabled:opacity-50 active:scale-[0.98] transition-all">
                 {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto" /> : 'Add Event'}
               </button>
             </form>
