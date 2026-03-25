@@ -112,40 +112,34 @@ export default function AutoScheduler() {
   const todayTasks = getScheduledForDate(now)
 
   return (
-    <div className="animate-enter space-y-4">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 sm:p-2.5 rounded-xl bg-indigo-600/10">
-            <CalendarClock size={18} className="text-indigo-400" />
-          </div>
           <div>
-            <h1 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-              Auto Scheduler
-              <Sparkles size={14} className="text-indigo-400" />
-            </h1>
-            <p className="text-slate-500 text-[11px] mt-0.5">AI-optimized task scheduling</p>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Auto Scheduler</h1>
+            <p className="text-slate-400 mt-1">AI-optimized task scheduling</p>
           </div>
         </div>
       </div>
 
       {/* Summary Strip */}
-      <div className="grid grid-cols-3 gap-2.5">
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-3 text-center">
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-4 text-center">
           <div className="flex items-center justify-center gap-1.5 mb-1">
             <Zap size={11} className="text-indigo-400" />
             <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Scheduled</span>
           </div>
           <p className="text-xl font-bold text-indigo-400">{totalScheduled}</p>
         </div>
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-3 text-center">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-4 text-center">
           <div className="flex items-center justify-center gap-1.5 mb-1">
             <Clock size={11} className="text-blue-400" />
             <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Today</span>
           </div>
           <p className="text-xl font-bold text-blue-400">{todayTasks.length}</p>
         </div>
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-3 text-center">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-4 text-center">
           <div className="flex items-center justify-center gap-1.5 mb-1">
             <AlertTriangle size={11} className={overdueTasks > 0 ? 'text-red-400' : 'text-emerald-400'} />
             <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Overdue</span>
@@ -156,7 +150,7 @@ export default function AutoScheduler() {
 
       {/* Today's Focus */}
       {todayTasks.length > 0 && (
-        <div className="bg-[#131b2e] rounded-xl border border-indigo-500/20 shadow-xl p-4">
+        <div className="bg-[#131b2e] rounded-2xl border border-indigo-500/20 shadow-xl p-5">
           <h3 className="text-xs font-bold text-slate-200 mb-2.5 flex items-center gap-2">
             <div className="p-1 rounded-lg bg-indigo-600/10"><Zap size={12} className="text-indigo-400" /></div>
             Today's Focus
@@ -178,7 +172,7 @@ export default function AutoScheduler() {
       )}
 
       {/* Calendar */}
-      <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-4">
+      <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-5">
         {/* Month nav */}
         <div className="flex items-center justify-between mb-3">
           <button onClick={() => setMonthOffset(monthOffset - 1)}
@@ -245,7 +239,7 @@ export default function AutoScheduler() {
       </div>
 
       {/* How it works */}
-      <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-3 sm:p-4">
+      <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-5">
         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Scheduling Algorithm</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] text-slate-400">
           <div className="flex gap-2">

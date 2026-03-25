@@ -96,20 +96,15 @@ export default function Reports() {
   ], [taskStats])
 
   return (
-    <div className="animate-enter space-y-4">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="p-2 sm:p-2.5 rounded-xl bg-cyan-600/10">
-          <BarChart3 size={18} className="text-cyan-400" />
-        </div>
-        <div>
-          <h1 className="text-lg sm:text-xl font-bold text-white">Reports & Analytics</h1>
-          <p className="text-slate-500 text-[11px] mt-0.5">Comprehensive task & wellness insights</p>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold text-white tracking-tight">Reports & Analytics</h1>
+        <p className="text-slate-400 mt-1">Comprehensive task & wellness insights</p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <StatCard icon={CheckCircle} label="Completion" value={`${taskStats.completionRate}%`}
           color={taskStats.completionRate >= 75 ? 'emerald' : taskStats.completionRate >= 50 ? 'amber' : 'red'} />
         <StatCard icon={Activity} label="Active Tasks" value={taskStats.inProgress + taskStats.todo} color="blue" />
@@ -120,9 +115,9 @@ export default function Reports() {
       </div>
 
       {/* Task Analytics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Task Status Pie */}
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-4">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
           <h3 className="text-xs font-bold text-slate-200 mb-3 flex items-center gap-2">
             <div className="p-1 rounded-lg bg-blue-600/10"><CheckCircle size={12} className="text-blue-400" /></div>
             Task Status Distribution
@@ -155,7 +150,7 @@ export default function Reports() {
         </div>
 
         {/* Priority Breakdown */}
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-4">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
           <h3 className="text-xs font-bold text-slate-200 mb-3 flex items-center gap-2">
             <div className="p-1 rounded-lg bg-amber-600/10"><AlertTriangle size={12} className="text-amber-400" /></div>
             Priority Breakdown
@@ -181,7 +176,7 @@ export default function Reports() {
       </div>
 
       {/* Stress Analytics Section */}
-      <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-4">
+      <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
         <h3 className="text-xs font-bold text-slate-200 mb-1 flex items-center gap-2">
           <div className="p-1 rounded-lg bg-purple-600/10"><Brain size={12} className="text-purple-400" /></div>
           Stress Level Over Time
@@ -233,9 +228,9 @@ export default function Reports() {
       </div>
 
       {/* Stress Factor Analysis Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Radar */}
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-4">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
           <h3 className="text-xs font-bold text-slate-200 mb-3 flex items-center gap-2">
             <div className="p-1 rounded-lg bg-purple-600/10"><TrendingUp size={12} className="text-purple-400" /></div>
             Stress Factor Radar
@@ -254,7 +249,7 @@ export default function Reports() {
         </div>
 
         {/* Stress Distribution Pie */}
-        <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-4">
+        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
           <h3 className="text-xs font-bold text-slate-200 mb-3 flex items-center gap-2">
             <div className="p-1 rounded-lg bg-cyan-600/10"><Activity size={12} className="text-cyan-400" /></div>
             Stress Distribution

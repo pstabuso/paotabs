@@ -116,16 +116,13 @@ export default function EisenhowerMatrix() {
   const completedCount = tasks.filter(t => t.status === 'completed' || t.status === 'done').length
 
   return (
-    <div className="animate-enter space-y-4">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-600/10">
-            <Grid3X3 size={18} className="text-emerald-400" />
-          </div>
           <div>
-            <h1 className="text-lg sm:text-xl font-bold text-white">Eisenhower Matrix</h1>
-            <p className="text-slate-500 text-[11px] mt-0.5">Auto-prioritized by deadline & importance</p>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Eisenhower Matrix</h1>
+            <p className="text-slate-400 mt-1">Auto-prioritized by deadline & importance</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -139,7 +136,7 @@ export default function EisenhowerMatrix() {
       </div>
 
       {/* Legend */}
-      <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-3 sm:p-4">
+      <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-5">
         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">How it works</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <div className="text-[10px] text-slate-400"><span className="text-red-400 font-bold">Urgent + Important</span> = Due in 3 days + High/Critical</div>
@@ -150,9 +147,9 @@ export default function EisenhowerMatrix() {
       </div>
 
       {/* Matrix Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {QUADRANTS.map(q => (
-          <div key={q.key} className={`${q.bg} rounded-xl border ${q.border} shadow-xl p-4 min-h-[180px]`}>
+          <div key={q.key} className={`${q.bg} rounded-2xl border ${q.border} shadow-xl p-5 min-h-[200px]`}>
             <div className="flex items-center gap-2 mb-3">
               <div className={`p-1.5 rounded-lg ${q.iconBg}`}>
                 <q.icon size={14} className={q.iconColor} />
