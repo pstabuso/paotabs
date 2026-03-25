@@ -9,32 +9,32 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body || {}
-    const { email, password } = body
+    const { username, password } = body
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password required' })
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' })
     }
 
     const db = await getDb()
-    const user = await db.collection('users').findOne({ email: email.toLowerCase().trim() })
+    const user = await db.collection('users').findOne({ username: username.toLowerCase().trim() })
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' })
+      return res.status(401).json({ error: 'Invalid username or password' })
     }
 
     const valid = await bcrypt.compare(password, user.password)
     if (!valid) {
-      return res.status(401).json({ error: 'Invalid email or password' })
+      return res.status(401).json({ error: 'Invalid username or password' })
     }
 
-    const token = signToken({ id: user._id.toString(), email: user.email })
+    const token = signToken({ id: user._id.toString(), username: user.username })
 
     return res.status(200).json({
       token,
       user: {
         id: user._id.toString(),
-        email: user.email,
-        user_metadata: { full_name: user.full_name || '' }
+        username: user.username,
+        full_name: user.full_name || user.username
       }
     })
   } catch (err) {

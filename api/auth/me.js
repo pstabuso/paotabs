@@ -25,8 +25,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       user: {
         id: user._id.toString(),
-        email: user.email,
-        user_metadata: { full_name: user.full_name || '' }
+        username: user.username,
+        full_name: user.full_name || user.username
       }
     })
   } catch (err) {

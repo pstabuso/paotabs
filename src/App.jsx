@@ -6,8 +6,11 @@ import Sidebar from './components/Sidebar'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import TaskTracker from './pages/TaskTracker'
+import EisenhowerMatrix from './pages/EisenhowerMatrix'
 import StressAssessment from './pages/StressAssessment'
 import StressChatbot from './pages/StressChatbot'
+import Reports from './pages/Reports'
+import AutoScheduler from './pages/AutoScheduler'
 import Progress from './pages/Progress'
 import Schedule from './pages/Schedule'
 import { Menu, Zap } from 'lucide-react'
@@ -38,8 +41,11 @@ function AppLayout() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/tasks" element={<TaskTracker />} />
+              <Route path="/matrix" element={<EisenhowerMatrix />} />
               <Route path="/stress" element={<StressAssessment />} />
               <Route path="/chatbot" element={<StressChatbot />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/scheduler" element={<AutoScheduler />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="*" element={<Navigate to="/" replace />} />

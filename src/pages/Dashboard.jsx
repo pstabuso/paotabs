@@ -8,7 +8,7 @@ export default function Dashboard() {
   const { user } = useAuth()
   const { tasks, assessments, events } = useApp()
 
-  const firstName = user?.user_metadata?.full_name?.split(' ')[0] || 'there'
+  const firstName = user?.full_name?.split(' ')[0] || user?.username || 'there'
   const totalTasks = tasks.length
   const doneTasks = tasks.filter(t => t.status === 'done').length
   const inProgress = tasks.filter(t => t.status === 'in_progress').length

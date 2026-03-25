@@ -1,14 +1,17 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, CheckSquare, Brain, MessageCircle, TrendingUp, Calendar, LogOut, Zap } from 'lucide-react'
+import { LayoutDashboard, CheckSquare, Grid3X3, Brain, MessageCircle, BarChart3, CalendarClock, TrendingUp, Calendar, LogOut, Zap } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/tasks', icon: CheckSquare, label: 'Task Tracker' },
+  { to: '/matrix', icon: Grid3X3, label: 'Eisenhower Matrix' },
+  { to: '/scheduler', icon: CalendarClock, label: 'Auto Scheduler' },
   { to: '/stress', icon: Brain, label: 'Stress Check' },
   { to: '/chatbot', icon: MessageCircle, label: 'AI Counselor' },
+  { to: '/reports', icon: BarChart3, label: 'Reports' },
   { to: '/progress', icon: TrendingUp, label: 'Progress' },
-  { to: '/schedule', icon: Calendar, label: 'Schedule' },
+  { to: '/schedule', icon: Calendar, label: 'Calendar' },
 ]
 
 export default function Sidebar({ open, onClose }) {
@@ -38,7 +41,7 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
           <p className="text-[9px] text-slate-600 uppercase tracking-wider font-bold px-2.5 mb-2">Navigation</p>
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink
@@ -64,13 +67,13 @@ export default function Sidebar({ open, onClose }) {
         <div className="p-3 border-t border-slate-800/50">
           <div className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg bg-[#131b2e] border border-slate-800 mb-1.5">
             <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white text-[10px] font-bold shadow-sm flex-shrink-0">
-              {user?.user_metadata?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
+              {user?.full_name?.[0]?.toUpperCase() || user?.username?.[0]?.toUpperCase() || 'U'}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium text-slate-200 truncate">
-                {user?.user_metadata?.full_name || 'User'}
+                {user?.full_name || user?.username || 'User'}
               </p>
-              <p className="text-[10px] text-slate-600 truncate">{user?.email}</p>
+              <p className="text-[10px] text-slate-600 truncate">@{user?.username}</p>
             </div>
           </div>
           <button

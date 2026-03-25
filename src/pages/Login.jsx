@@ -1,25 +1,26 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { ArrowRight, Zap, Shield, BarChart3, Brain } from 'lucide-react'
+import { ArrowRight, Zap, Shield, BarChart3, Brain, User } from 'lucide-react'
 
 export default function Login() {
   const { signIn, signUp } = useAuth()
   const [isSignUp, setIsSignUp] = useState(false)
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
     if (isSignUp) {
-      const { error } = await signUp(email, password, fullName)
+      const { error } = await signUp(username, password, fullName)
       if (error) setError(error.message)
     } else {
-      const { error } = await signIn(email, password)
+      const { error } = await signIn(username, password)
       if (error) setError(error.message)
     }
     setLoading(false)
@@ -42,8 +43,8 @@ export default function Login() {
           </div>
 
           <div className="space-y-2.5 stagger">
-            <FeatureRow icon={BarChart3} title="Task Management" desc="Kanban boards, priorities, deadlines" />
-            <FeatureRow icon={Brain} title="Stress Assessment" desc="Track wellness with smart check-ins" />
+            <FeatureRow icon={BarChart3} title="Eisenhower Matrix" desc="Auto-prioritize tasks by urgency" />
+            <FeatureRow icon={Brain} title="AI Stress Counselor" desc="Conversational wellness diagnosis" />
             <FeatureRow icon={Shield} title="Secure & Private" desc="Encrypted auth with JWT protection" />
           </div>
         </div>
@@ -66,7 +67,7 @@ export default function Login() {
               {isSignUp ? 'Create Account' : 'Welcome Back'}
             </h2>
             <p className="text-xs text-slate-500 mb-5">
-              {isSignUp ? 'Start your journey to better productivity' : 'Sign in to access your dashboard'}
+              {isSignUp ? 'Pick a username to get started' : 'Sign in to access your dashboard'}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -76,18 +77,21 @@ export default function Login() {
                   <input
                     type="text" value={fullName} onChange={e => setFullName(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-lg bg-[#0B0F19] border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-600"
-                    placeholder="Paolo Tabuso" required
+                    placeholder="Paolo Tabuso"
                   />
                 </div>
               )}
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 mb-1 uppercase tracking-wider">Email</label>
-                <input
-                  type="email" value={email} onChange={e => setEmail(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-lg bg-[#0B0F19] border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-600"
-                  placeholder="you@example.com" required
-                />
+                <label className="block text-[10px] font-bold text-slate-500 mb-1 uppercase tracking-wider">Username</label>
+                <div className="relative">
+                  <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
+                  <input
+                    type="text" value={username} onChange={e => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))}
+                    className="w-full pl-8 pr-3 py-2.5 rounded-lg bg-[#0B0F19] border border-slate-700/50 text-slate-200 text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-600"
+                    placeholder="paolo" required minLength={3}
+                  />
+                </div>
               </div>
 
               <div>
@@ -105,7 +109,6 @@ export default function Login() {
                   {error}
                 </div>
               )}
-
 
               <button
                 type="submit" disabled={loading}

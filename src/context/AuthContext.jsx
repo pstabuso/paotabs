@@ -28,9 +28,9 @@ export function AuthProvider({ children }) {
     })
   }, [])
 
-  const signUp = async (email, password, fullName) => {
+  const signUp = async (username, password, fullName) => {
     try {
-      const { data, error } = await api.post('/auth/signup', { email, password, fullName })
+      const { data, error } = await api.post('/auth/signup', { username, password, fullName })
       if (data?.token) {
         setToken(data.token)
         setUser(data.user)
@@ -41,9 +41,9 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const signIn = async (email, password) => {
+  const signIn = async (username, password) => {
     try {
-      const { data, error } = await api.post('/auth/signin', { email, password })
+      const { data, error } = await api.post('/auth/signin', { username, password })
       if (data?.token) {
         setToken(data.token)
         setUser(data.user)

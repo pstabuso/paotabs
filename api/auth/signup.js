@@ -9,40 +9,46 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body || {}
-    const { email, password, fullName } = body
+    const { username, password, fullName } = body
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password required' })
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' })
+    }
+    if (username.length < 3) {
+      return res.status(400).json({ error: 'Username must be at least 3 characters' })
     }
     if (password.length < 6) {
       return res.status(400).json({ error: 'Password must be at least 6 characters' })
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return res.status(400).json({ error: 'Username can only contain letters, numbers, and underscores' })
     }
 
     const db = await getDb()
     const users = db.collection('users')
 
-    const existing = await users.findOne({ email: email.toLowerCase().trim() })
+    const existing = await users.findOne({ username: username.toLowerCase().trim() })
     if (existing) {
-      return res.status(409).json({ error: 'An account with this email already exists' })
+      return res.status(409).json({ error: 'Username already taken' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = {
-      email: email.toLowerCase().trim(),
+      username: username.toLowerCase().trim(),
       password: hashedPassword,
-      full_name: fullName || '',
+      full_name: fullName || username,
       created_at: new Date().toISOString()
     }
 
     const result = await users.insertOne(user)
-    const token = signToken({ id: result.insertedId.toString(), email: user.email })
+    const token = signToken({ id: result.insertedId.toString(), username: user.username })
 
     return res.status(201).json({
       token,
       user: {
         id: result.insertedId.toString(),
-        email: user.email,
-        user_metadata: { full_name: user.full_name }
+        username: user.username,
+        full_name: user.full_name
       }
     })
   } catch (err) {
