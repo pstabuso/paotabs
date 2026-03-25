@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="12" fill="#0f1524"/>
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="url(#grad)" stroke="#334155" stroke-width="1"/>
+  <text x="24" y="32" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="22" fill="url(#textGrad)">PT</text>
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stop-color="#131b2e"/>
+      <stop offset="100%" stop-color="#1a2340"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+</svg>
