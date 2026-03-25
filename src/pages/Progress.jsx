@@ -33,57 +33,48 @@ export default function Progress() {
   const tasksDone = tasks.filter(t => t.status === 'done').length
   const tasksTotal = tasks.length
 
-  const tooltipStyle = { backgroundColor: '#0f172a', borderColor: '#1e293b', borderRadius: '12px', color: '#e2e8f0' }
+  const tooltipStyle = { backgroundColor: '#0f172a', borderColor: '#1e293b', borderRadius: '8px', color: '#e2e8f0', fontSize: '10px' }
 
   return (
-    <div className="space-y-6 animate-enter">
-      <div className="flex items-center gap-4">
-        <div className="p-3 rounded-2xl bg-emerald-600/10">
-          <Activity size={22} className="text-emerald-400" />
+    <div className="space-y-4 sm:space-y-5 animate-enter">
+      <div className="flex items-center gap-3">
+        <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-600/10">
+          <Activity size={18} className="text-emerald-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-white">Progress & Analytics</h1>
-          <p className="text-slate-500 text-sm mt-0.5">Track your wellness and productivity over time</p>
+          <h1 className="text-lg sm:text-xl font-bold text-white">Progress</h1>
+          <p className="text-slate-500 text-[11px] mt-0.5">Wellness & productivity analytics</p>
         </div>
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
-        <SummaryCard
-          label="Avg Stress" value={avgStress ? `${avgStress}/10` : '—'} sub={`${totalAssessments} assessments`}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 stagger">
+        <SummaryCard label="Avg Stress" value={avgStress ? `${avgStress}/10` : '—'} sub={`${totalAssessments} checks`}
           color={!avgStress ? 'text-slate-500' : Number(avgStress) <= 3 ? 'text-emerald-400' : Number(avgStress) <= 6 ? 'text-amber-400' : 'text-red-400'}
-          bg="bg-purple-600/10" icon={Brain}
-        />
-        <SummaryCard
-          label="Stress Trend" value={trend === 0 ? 'Stable' : trend > 0 ? `+${trend}` : `${trend}`}
-          sub="vs. last check"
+          bg="bg-purple-600/10" icon={Brain} />
+        <SummaryCard label="Trend" value={trend === 0 ? 'Stable' : trend > 0 ? `+${trend}` : `${trend}`} sub="vs last"
           color={trend === 0 ? 'text-slate-500' : trend < 0 ? 'text-emerald-400' : 'text-red-400'}
           bg={trend === 0 ? 'bg-slate-600/10' : trend < 0 ? 'bg-emerald-600/10' : 'bg-red-600/10'}
-          icon={trend === 0 ? Minus : trend > 0 ? TrendingUp : TrendingDown}
-        />
-        <SummaryCard
-          label="Tasks Done" value={tasksDone} sub={`of ${tasksTotal} total`}
-          color="text-blue-400" bg="bg-blue-600/10" icon={CheckSquare}
-        />
-        <SummaryCard
-          label="Completion" value={tasksTotal > 0 ? `${Math.round(tasksDone / tasksTotal * 100)}%` : '—'} sub="all time"
-          color="text-cyan-400" bg="bg-cyan-600/10" icon={TrendingUp}
-        />
+          icon={trend === 0 ? Minus : trend > 0 ? TrendingUp : TrendingDown} />
+        <SummaryCard label="Tasks Done" value={tasksDone} sub={`of ${tasksTotal}`}
+          color="text-blue-400" bg="bg-blue-600/10" icon={CheckSquare} />
+        <SummaryCard label="Completion" value={tasksTotal > 0 ? `${Math.round(tasksDone / tasksTotal * 100)}%` : '—'} sub="all time"
+          color="text-cyan-400" bg="bg-cyan-600/10" icon={TrendingUp} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-lg bg-purple-600/10"><Brain size={16} className="text-purple-400" /></div>
-              <h3 className="text-sm font-bold text-slate-200">Stress Over Time</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+        <div className="bg-[#131b2e] rounded-xl sm:rounded-2xl border border-slate-800 shadow-xl p-4 sm:p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-purple-600/10"><Brain size={13} className="text-purple-400" /></div>
+              <h3 className="text-xs font-bold text-slate-200">Stress Over Time</h3>
             </div>
-            <Link to="/stress" className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-bold transition-colors">
-              Assess <ArrowUpRight size={12} />
+            <Link to="/stress" className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-0.5 font-bold transition-colors">
+              Assess <ArrowUpRight size={10} />
             </Link>
           </div>
           {stressData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={180}>
               <AreaChart data={stressData}>
                 <defs>
                   <linearGradient id="progressStressGrad" x1="0" y1="0" x2="0" y2="1">
@@ -92,32 +83,32 @@ export default function Progress() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" />
-                <XAxis dataKey="name" tick={{ fill: '#475569', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis domain={[0, 10]} tick={{ fill: '#475569', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="name" tick={{ fill: '#475569', fontSize: 9 }} axisLine={false} tickLine={false} />
+                <YAxis domain={[0, 10]} tick={{ fill: '#475569', fontSize: 9 }} axisLine={false} tickLine={false} width={20} />
                 <Tooltip contentStyle={tooltipStyle} cursor={{ stroke: 'rgba(59,130,246,0.15)' }} />
-                <Area type="monotone" dataKey="level" stroke="#3b82f6" fill="url(#progressStressGrad)" strokeWidth={2.5} dot={{ fill: '#3b82f6', r: 3, strokeWidth: 0 }} activeDot={{ r: 5, stroke: '#3b82f6', strokeWidth: 2, fill: '#131b2e' }} />
+                <Area type="monotone" dataKey="level" stroke="#3b82f6" fill="url(#progressStressGrad)" strokeWidth={2} dot={{ fill: '#3b82f6', r: 2.5, strokeWidth: 0 }} activeDot={{ r: 4, stroke: '#3b82f6', strokeWidth: 2, fill: '#131b2e' }} />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[250px] flex flex-col items-center justify-center">
-              <Brain size={28} className="text-slate-700 mb-2" />
-              <p className="text-sm text-slate-600">No assessments yet</p>
+            <div className="h-[180px] flex flex-col items-center justify-center">
+              <Brain size={22} className="text-slate-700 mb-1.5" />
+              <p className="text-[11px] text-slate-600">No assessments yet</p>
             </div>
           )}
         </div>
 
-        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-lg bg-blue-600/10"><CheckSquare size={16} className="text-blue-400" /></div>
-              <h3 className="text-sm font-bold text-slate-200">Tasks Completed</h3>
+        <div className="bg-[#131b2e] rounded-xl sm:rounded-2xl border border-slate-800 shadow-xl p-4 sm:p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-blue-600/10"><CheckSquare size={13} className="text-blue-400" /></div>
+              <h3 className="text-xs font-bold text-slate-200">Tasks Completed</h3>
             </div>
-            <Link to="/tasks" className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-bold transition-colors">
-              Tasks <ArrowUpRight size={12} />
+            <Link to="/tasks" className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-0.5 font-bold transition-colors">
+              Tasks <ArrowUpRight size={10} />
             </Link>
           </div>
           {taskChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={180}>
               <BarChart data={taskChartData}>
                 <defs>
                   <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
@@ -126,16 +117,16 @@ export default function Progress() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" />
-                <XAxis dataKey="name" tick={{ fill: '#475569', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#475569', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <XAxis dataKey="name" tick={{ fill: '#475569', fontSize: 9 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#475569', fontSize: 9 }} axisLine={false} tickLine={false} allowDecimals={false} width={20} />
                 <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(59,130,246,0.05)' }} />
-                <Bar dataKey="completed" fill="url(#barGrad)" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="completed" fill="url(#barGrad)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[250px] flex flex-col items-center justify-center">
-              <CheckSquare size={28} className="text-slate-700 mb-2" />
-              <p className="text-sm text-slate-600">Complete tasks to see stats</p>
+            <div className="h-[180px] flex flex-col items-center justify-center">
+              <CheckSquare size={22} className="text-slate-700 mb-1.5" />
+              <p className="text-[11px] text-slate-600">Complete tasks to see stats</p>
             </div>
           )}
         </div>
@@ -143,23 +134,23 @@ export default function Progress() {
 
       {/* Assessment History */}
       {assessments.length > 0 && (
-        <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-6">
-          <h3 className="text-sm font-bold text-slate-200 mb-5">Assessment History</h3>
+        <div className="bg-[#131b2e] rounded-xl sm:rounded-2xl border border-slate-800 shadow-xl p-4 sm:p-5">
+          <h3 className="text-xs font-bold text-slate-200 mb-4">Assessment History</h3>
           <div className="divide-y divide-slate-800/50">
             {assessments.slice(0, 10).map((a) => {
               const levelColor = a.stress_level <= 3 ? 'emerald' : a.stress_level <= 6 ? 'amber' : 'red'
               return (
-                <div key={a.id} className="flex items-center gap-4 py-3 px-3 hover:bg-slate-800/40 transition-colors">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold bg-${levelColor}-600/10 text-${levelColor}-400 flex-shrink-0`}>
+                <div key={a.id} className="flex items-center gap-3 py-2.5 px-2 hover:bg-slate-800/40 transition-colors">
+                  <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-xs font-bold bg-${levelColor}-600/10 text-${levelColor}-400 flex-shrink-0`}>
                     {a.stress_level}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-slate-300 font-medium">
-                      Sleep: <span className="text-slate-400">{a.sleep_quality}</span> · Appetite: <span className="text-slate-400">{a.appetite}</span> · Energy: <span className="text-slate-400">{a.energy_level}</span>
+                    <p className="text-[11px] text-slate-300 font-medium">
+                      Sleep: <span className="text-slate-400">{a.sleep_quality}</span> · Energy: <span className="text-slate-400">{a.energy_level}</span>
                     </p>
-                    <p className="text-xs text-slate-600 mt-0.5 truncate">{a.feelings || 'No description'}</p>
+                    <p className="text-[10px] text-slate-600 mt-0.5 truncate">{a.feelings || 'No description'}</p>
                   </div>
-                  <span className="text-[10px] text-slate-600 flex-shrink-0 font-bold uppercase tracking-wider">
+                  <span className="text-[9px] text-slate-600 flex-shrink-0 font-bold uppercase tracking-wider">
                     {new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </span>
                 </div>
@@ -174,15 +165,15 @@ export default function Progress() {
 
 function SummaryCard({ label, value, sub, color, bg, icon: Icon }) {
   return (
-    <div className="bg-[#131b2e] rounded-2xl border border-slate-800 shadow-xl p-5">
-      <div className="flex items-center justify-between mb-3">
-        <div className={`p-2 rounded-xl ${bg}`}>
-          <Icon size={16} className={color} />
+    <div className="bg-[#131b2e] rounded-xl border border-slate-800 shadow-xl p-3 sm:p-4">
+      <div className="flex items-center justify-between mb-2">
+        <div className={`p-1.5 rounded-lg ${bg}`}>
+          <Icon size={13} className={color} />
         </div>
       </div>
-      <p className={`text-2xl font-bold ${color} tracking-tight`}>{value}</p>
-      <p className="text-[10px] font-bold text-slate-500 mt-0.5 uppercase tracking-wider">{label}</p>
-      <p className="text-[11px] text-slate-600 mt-1">{sub}</p>
+      <p className={`text-lg sm:text-xl font-bold ${color} tracking-tight`}>{value}</p>
+      <p className="text-[9px] font-bold text-slate-500 mt-0.5 uppercase tracking-wider">{label}</p>
+      <p className="text-[10px] text-slate-600 mt-0.5">{sub}</p>
     </div>
   )
 }

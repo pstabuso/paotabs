@@ -15,9 +15,7 @@
   --color-danger: #ef4444;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
