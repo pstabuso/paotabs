@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import { useAuth } from './AuthContext'
 
 const AppContext = createContext({})
@@ -15,31 +15,19 @@ export function AppProvider({ children }) {
 
   const fetchTasks = useCallback(async () => {
     if (!user) return
-    const { data } = await supabase
-      .from('pt_tasks')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+    const { data } = await api.get('/tasks')
     if (data) setTasks(data)
   }, [user])
 
   const fetchAssessments = useCallback(async () => {
     if (!user) return
-    const { data } = await supabase
-      .from('pt_assessments')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+    const { data } = await api.get('/assessments')
     if (data) setAssessments(data)
   }, [user])
 
   const fetchEvents = useCallback(async () => {
     if (!user) return
-    const { data } = await supabase
-      .from('pt_events')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('event_date', { ascending: true })
+    const { data } = await api.get('/events')
     if (data) setEvents(data)
   }, [user])
 
@@ -56,50 +44,37 @@ export function AppProvider({ children }) {
   }, [user, fetchTasks, fetchAssessments, fetchEvents])
 
   const addTask = async (task) => {
-    const { data, error } = await supabase
-      .from('pt_tasks')
-      .insert([{ ...task, user_id: user.id }])
-      .select()
-    if (data) setTasks(prev => [data[0], ...prev])
+    const { data, error } = await api.post('/tasks', task)
+    if (data) setTasks(prev => [data, ...prev])
     return { data, error }
   }
 
   const updateTask = async (id, updates) => {
-    const { data, error } = await supabase
-      .from('pt_tasks')
-      .update({ ...updates, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .select()
-    if (data) setTasks(prev => prev.map(t => t.id === id ? data[0] : t))
+    const { data, error } = await api.put(`/tasks/${id}`, updates)
+    if (data) setTasks(prev => prev.map(t => t.id === id ? data : t))
     return { data, error }
   }
 
   const deleteTask = async (id) => {
-    const { error } = await supabase.from('pt_tasks').delete().eq('id', id)
+    const { data, error } = await api.delete(`/tasks/${id}`)
     if (!error) setTasks(prev => prev.filter(t => t.id !== id))
     return { error }
   }
 
   const addAssessment = async (assessment) => {
-    const { data, error } = await supabase
-      .from('pt_assessments')
-      .insert([{ ...assessment, user_id: user.id }])
-      .select()
-    if (data) setAssessments(prev => [data[0], ...prev])
+    const { data, error } = await api.post('/assessments', assessment)
+    if (data) setAssessments(prev => [data, ...prev])
     return { data, error }
   }
 
   const addEvent = async (event) => {
-    const { data, error } = await supabase
-      .from('pt_events')
-      .insert([{ ...event, user_id: user.id }])
-      .select()
-    if (data) setEvents(prev => [...prev, data[0]].sort((a, b) => new Date(a.event_date) - new Date(b.event_date)))
+    const { data, error } = await api.post('/events', event)
+    if (data) setEvents(prev => [...prev, data].sort((a, b) => new Date(a.event_date) - new Date(b.event_date)))
     return { data, error }
   }
 
   const deleteEvent = async (id) => {
-    const { error } = await supabase.from('pt_events').delete().eq('id', id)
+    const { data, error } = await api.delete(`/events/${id}`)
     if (!error) setEvents(prev => prev.filter(e => e.id !== id))
     return { error }
   }
