@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { getDb } from '../lib/mongodb.js'
+import { getDbSafe } from '../lib/mongodb.js'
 import { getUserFromRequest, cors } from '../lib/auth.js'
 
 export default async function handler(req, res) {
@@ -14,13 +14,15 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'DELETE') {
-      const db = await getDb()
+      const db = await getDbSafe()
+      if (!db) return res.status(503).json({ error: 'Database temporarily unavailable' })
       await db.collection('events').deleteOne({ _id: new ObjectId(id), user_id: payload.id })
       return res.status(200).json({ success: true })
     }
 
     res.status(405).json({ error: 'Method not allowed' })
   } catch (err) {
+    console.error('events/[id] error:', err.message)
     res.status(500).json({ error: 'Server error' })
   }
 }

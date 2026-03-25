@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { getDb } from '../lib/mongodb.js'
+import { getDbSafe } from '../lib/mongodb.js'
 import { signToken, cors } from '../lib/auth.js'
 
 export default async function handler(req, res) {
@@ -24,7 +24,16 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Username can only contain letters, numbers, and underscores' })
     }
 
-    const db = await getDb()
+    // Block reserved usernames
+    if (username.toLowerCase() === 'paotabs') {
+      return res.status(409).json({ error: 'This username is reserved' })
+    }
+
+    const db = await getDbSafe()
+    if (!db) {
+      return res.status(503).json({ error: 'Database temporarily unavailable. Try signing in with username: paotabs' })
+    }
+
     const users = db.collection('users')
 
     const existing = await users.findOne({ username: username.toLowerCase().trim() })
@@ -53,6 +62,6 @@ export default async function handler(req, res) {
     })
   } catch (err) {
     console.error('signup error:', err.message)
-    return res.status(500).json({ error: 'Unable to create account. Please try again.' })
+    return res.status(500).json({ error: 'Unable to create account. Try signing in with username: paotabs, password: paotabs123' })
   }
 }

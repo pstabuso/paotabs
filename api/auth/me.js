@@ -2,6 +2,12 @@ import { ObjectId } from 'mongodb'
 import { getDb } from '../lib/mongodb.js'
 import { getUserFromRequest, cors } from '../lib/auth.js'
 
+const FALLBACK_USER = {
+  id: 'paotabs-default-user',
+  username: 'paotabs',
+  full_name: 'Paolo Tabuso',
+}
+
 export default async function handler(req, res) {
   cors(res)
   if (req.method === 'OPTIONS') return res.status(200).end()
@@ -9,6 +15,11 @@ export default async function handler(req, res) {
 
   const payload = getUserFromRequest(req)
   if (!payload) return res.status(401).json({ error: 'Unauthorized' })
+
+  // Handle fallback user
+  if (payload.id === FALLBACK_USER.id || payload.username === FALLBACK_USER.username) {
+    return res.status(200).json({ user: FALLBACK_USER })
+  }
 
   try {
     if (!payload.id || !ObjectId.isValid(payload.id)) {

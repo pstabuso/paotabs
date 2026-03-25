@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { getDb } from '../lib/mongodb.js'
+import { getDbSafe } from '../lib/mongodb.js'
 import { getUserFromRequest, cors } from '../lib/auth.js'
 
 export default async function handler(req, res) {
@@ -12,10 +12,12 @@ export default async function handler(req, res) {
   const { id } = req.query
   if (!id || !ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' })
 
-  const db = await getDb()
-  const col = db.collection('tasks')
-
   try {
+    const db = await getDbSafe()
+    if (!db) return res.status(503).json({ error: 'Database temporarily unavailable' })
+
+    const col = db.collection('tasks')
+
     if (req.method === 'PUT') {
       const updates = { ...req.body, updated_at: new Date().toISOString() }
       delete updates.id
@@ -37,6 +39,7 @@ export default async function handler(req, res) {
 
     res.status(405).json({ error: 'Method not allowed' })
   } catch (err) {
+    console.error('tasks/[id] error:', err.message)
     res.status(500).json({ error: 'Server error' })
   }
 }

@@ -1,4 +1,4 @@
-import { getDb } from '../lib/mongodb.js'
+import { getDbSafe } from '../lib/mongodb.js'
 import { getUserFromRequest, cors } from '../lib/auth.js'
 
 export default async function handler(req, res) {
@@ -8,10 +8,15 @@ export default async function handler(req, res) {
   const payload = getUserFromRequest(req)
   if (!payload) return res.status(401).json({ error: 'Unauthorized' })
 
-  const db = await getDb()
-  const col = db.collection('events')
-
   try {
+    const db = await getDbSafe()
+    if (!db) {
+      if (req.method === 'GET') return res.status(200).json([])
+      return res.status(503).json({ error: 'Database temporarily unavailable' })
+    }
+
+    const col = db.collection('events')
+
     if (req.method === 'GET') {
       const docs = await col.find({ user_id: payload.id }).sort({ event_date: 1 }).toArray()
       return res.status(200).json(docs.map(d => ({ ...d, id: d._id.toString(), _id: undefined })))
@@ -29,6 +34,8 @@ export default async function handler(req, res) {
 
     res.status(405).json({ error: 'Method not allowed' })
   } catch (err) {
+    console.error('events error:', err.message)
+    if (req.method === 'GET') return res.status(200).json([])
     res.status(500).json({ error: 'Server error' })
   }
 }

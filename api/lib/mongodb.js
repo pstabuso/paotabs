@@ -15,27 +15,30 @@ const options = {
   serverSelectionTimeoutMS: 10000,
   retryWrites: true,
   retryReads: true,
+  tls: true,
 }
 
 let clientPromise
 
-if (process.env.NODE_ENV === 'development') {
-  if (!global._mongoClientPromise) {
-    const client = new MongoClient(uri, options)
-    global._mongoClientPromise = client.connect()
-  }
-  clientPromise = global._mongoClientPromise
-} else {
-  if (!global._mongoClientPromise) {
-    const client = new MongoClient(uri, options)
-    global._mongoClientPromise = client.connect()
-  }
-  clientPromise = global._mongoClientPromise
+if (!global._mongoClientPromise) {
+  const client = new MongoClient(uri, options)
+  global._mongoClientPromise = client.connect()
 }
+clientPromise = global._mongoClientPromise
 
 export async function getDb() {
   const client = await clientPromise
   return client.db('paotabs')
+}
+
+// Safe version that returns null instead of throwing
+export async function getDbSafe() {
+  try {
+    const client = await clientPromise
+    return client.db('paotabs')
+  } catch {
+    return null
+  }
 }
 
 export default clientPromise
