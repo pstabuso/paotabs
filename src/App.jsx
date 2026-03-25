@@ -9,33 +9,40 @@ import TaskTracker from './pages/TaskTracker'
 import StressAssessment from './pages/StressAssessment'
 import Progress from './pages/Progress'
 import Schedule from './pages/Schedule'
-import { Menu } from 'lucide-react'
+import { Menu, Sparkles } from 'lucide-react'
 
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <AppProvider>
-      <div className="min-h-screen bg-[#0B0F19]">
+      <div className="min-h-screen bg-[#0B0F19] noise">
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {/* Mobile header */}
-        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-[#0f1524]/90 backdrop-blur border-b border-slate-800 px-4 py-3 flex items-center gap-3">
-          <button onClick={() => setSidebarOpen(true)} className="text-slate-400 hover:text-slate-200">
-            <Menu size={22} />
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 glass-strong px-4 py-3 flex items-center gap-3">
+          <button onClick={() => setSidebarOpen(true)} className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-white/[0.05] transition-all">
+            <Menu size={20} />
           </button>
-          <span className="text-sm font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">PaoTabs</span>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+              <Sparkles size={12} className="text-white" />
+            </div>
+            <span className="text-sm font-bold text-gradient">PaoTabs</span>
+          </div>
         </div>
 
-        <main className="lg:ml-64 p-6 pt-20 lg:pt-6 min-h-screen">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/tasks" element={<TaskTracker />} />
-            <Route path="/stress" element={<StressAssessment />} />
-            <Route path="/progress" element={<Progress />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+        <main className="lg:ml-[272px] p-5 pt-18 lg:pt-5 min-h-screen">
+          <div className="max-w-[1200px] mx-auto">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/tasks" element={<TaskTracker />} />
+              <Route path="/stress" element={<StressAssessment />} />
+              <Route path="/progress" element={<Progress />} />
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </AppProvider>
@@ -47,8 +54,15 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0B0F19]">
-        <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0F19] gap-4">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <Sparkles size={20} className="text-white animate-pulse" />
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+        </div>
       </div>
     )
   }
